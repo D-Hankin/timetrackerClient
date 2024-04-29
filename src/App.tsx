@@ -16,7 +16,7 @@ function App() {
 
   const fetchUser = async () => {
     try {
-      const response = await fetch("http://localhost:8080/api/user")
+      const response = await fetch("https://seal-app-rqad7.ondigitalocean.app/user")
       if (!response.ok) {
         throw new Error('Failed to fetch user data')
       }
