@@ -16,14 +16,7 @@ function App() {
 
   const fetchUser = async () => {
     try {
-      const response = await fetch("https://urchin-app-gt5j7.ondigitalocean.app/api/user", {
-        method: "GET",
-        headers: {
-          "Origin": "https://sea-lion-app-6y5s4.ondigitalocean.app/",
-          "username": "dhankin86",
-          "Content-Type" : "application/json"
-        }
-        })
+      const response = await fetch("https://https://seal-app-rqad7.ondigitalocean.app/api/user")
       if (!response.ok) {
         throw new Error('Failed to fetch user data')
       }
