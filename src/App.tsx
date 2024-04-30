@@ -16,12 +16,12 @@ function App() {
 
   const fetchUser = async () => {
     try {
-      const response = await fetch("http://localhost:8080/user/dhankin86")
-      if (!response.ok) {
-        throw new Error('Failed to fetch user data')
-      }
-      const userData: User = await response.json()
-      setUser(userData)
+      await fetch("http://localhost:8080/user/dhankin86")
+      .then(res => res.json())
+      .then(data => {
+        setUser(data)
+        console.log(data)
+      });
     } catch (error) {
       console.error('Error fetching user data:', error)
     }
