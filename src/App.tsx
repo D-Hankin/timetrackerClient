@@ -19,6 +19,7 @@ function App() {
       await fetch("https://urchin-app-gt5j7.ondigitalocean.app/api/user", {
         method: "GET",
         headers: {
+          "Origin": "https://sea-lion-app-6y5s4.ondigitalocean.app/",
           "Content-Type": "application/json",
           "username": "dhankin86"
         }
