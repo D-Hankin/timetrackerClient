@@ -16,7 +16,13 @@ function App() {
 
   const fetchUser = async () => {
     try {
-      await fetch("https://urchin-app-gt5j7.ondigitalocean.app/api/user")
+      await fetch("https://urchin-app-gt5j7.ondigitalocean.app/api/user", {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          "username": "dhankin86"
+        }
+      })
       .then(res => res.json())
       .then(data => {
         setUser(data)
