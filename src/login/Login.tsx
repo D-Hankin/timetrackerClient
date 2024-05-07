@@ -5,9 +5,9 @@ interface Props {
 }
 
 function Login(props: Props) {
-    const [username, setUsername] = useState("");
-    const [password, setPassword] = useState("");
-    const [token, setToken] = useState("");
+    const [username, setUsername] = useState<string>("");
+    const [password, setPassword] = useState<string>("");
+    const [token, setToken] = useState<string>("");
 
     const handleUsernameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setUsername(e.target.value);
@@ -39,8 +39,10 @@ function Login(props: Props) {
     };
 
     useEffect(() => {
-        localStorage.setItem("jwtToken", token)
-        props.updateLoggedIn();
+        if (token !== "") {
+            localStorage.setItem("jwtToken", token)
+            props.updateLoggedIn();
+        }
     }, [token])
 
     return (
