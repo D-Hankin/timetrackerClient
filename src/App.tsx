@@ -1,5 +1,7 @@
 import { useEffect, useState } from 'react'
 import './App.css'
+import Login from './login/Login'
+import UserPage from './userPage/UserPage'
 
 interface User {
   username: string,
@@ -9,6 +11,7 @@ interface User {
 function App() {
 
   const [user, setUser] = useState<User | null>(null)
+  const [loggedIn, setLoggedIn] = useState<Boolean>(false);
 
   useEffect(() => {
     fetchUser()
@@ -33,11 +36,17 @@ function App() {
       console.error('Error fetching user data:')
     }
   }
+
+  const updateLoggedIn = () => {
+    setLoggedIn(prevLoggedIn => !prevLoggedIn);
+    console.log(loggedIn);
+  }
   
 
   return (
     <>
       <h1>The Pit of Despair Time Management System</h1>
+      { !loggedIn ? <Login updateLoggedIn={updateLoggedIn}/> : <UserPage />}
       { user !== null ? <h2>{ user.username + " " + user.name }</h2> : <h2>No user found</h2>}
     </>
   )
