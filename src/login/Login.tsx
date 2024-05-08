@@ -1,18 +1,21 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 interface Props {
-    updateLoggedIn: () => void
-    updateToken: (token: string) => void;
-    updateRole: (role: string) => void;
+    updateLoggedIn: () => void,
+    updateToken: (token: string) => void,
+    updateRole: (role: string) => void,
+    updateUsername: (username: string) => void
+    username: string
 }
 
 function Login(props: Props) {
-    const [username, setUsername] = useState<string>("");
+    
     const [password, setPassword] = useState<string>("");
     const [error, setError] = useState<string>("");
+    const [inputUsername, setInputUsername] = useState<string>("");
 
     const handleUsernameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        setUsername(e.target.value);
+        setInputUsername(e.target.value);
     };
 
     const handlePasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -21,8 +24,8 @@ function Login(props: Props) {
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-
-        if (username.trim() == "" || password.trim() == "") {
+        console.log(inputUsername, password)
+        if (inputUsername.trim() == "" || password.trim() == "") {
             setError("You need to enter a valid username and password!")
         } else {
             fetch("https://urchin-app-gt5j7.ondigitalocean.app/api/secured/login", {
@@ -32,7 +35,7 @@ function Login(props: Props) {
                     "Content-Type": "application/json",
                 },
                 body: JSON.stringify({
-                    "username": username,
+                    "username": inputUsername,
                     "password": password
                 })
             }).then(res => {
@@ -55,12 +58,15 @@ function Login(props: Props) {
             });
         }
     };
+    useEffect(() => {
+        props.updateUsername(inputUsername);
+    }, [inputUsername])
 
     return (
         <div id='loginFormDiv'>
             <form id='loginForm' onSubmit={handleSubmit}>
                 <h2>Login</h2>
-                <input placeholder='username' value={username} onChange={handleUsernameChange}/>
+                <input placeholder='username' value={inputUsername} onChange={handleUsernameChange}/>
                 <input placeholder='password' type='password' value={password} onChange={handlePasswordChange}/>
                 <button type='submit'>Enter</button>
                 <p>{ error }</p>
