@@ -26,6 +26,7 @@ function User(props: Props) {
   const [entries, setEntries] = useState<Entry[] | null>(null);
   const [seconds, setSeconds] = useState<Record<string, number>>({});
   const [timers, setTimers] = useState<Record<string, boolean>>({});
+  const [timeToSend, setTimeToSend] = useState<number>(0);
 
   const fetchUser = async () => {
     await fetch("https://urchin-app-gt5j7.ondigitalocean.app/api/user", {
@@ -72,10 +73,21 @@ function User(props: Props) {
   };
 
   const handleTimerClick = (name: string) => {
+
+    if (timers[name]) {
+      clearInterval(intervalRef.current[name]);
+      intervalRef.current[name] = undefined;
+      setTimeToSend(seconds[name]);
+      setSeconds(prevSeconds => ({
+        ...prevSeconds, [name]: 0
+      }));
+    } 
+      
     setTimers(prevTimers => ({
-      ...prevTimers,
-      [name]: !prevTimers[name]
-    }));
+        ...prevTimers,
+        [name]: !prevTimers[name]
+    }))      
+    
   }
 
   const updateEntryName = (name: SetStateAction<string>) => {
@@ -87,6 +99,10 @@ function User(props: Props) {
     fetchUser();
     fetchEntries();
   }, []);
+
+  useEffect(() => {
+    console.log(timeToSend);
+  }, [timeToSend]);
   
   
   const intervalRef = useRef<Record<string, NodeJS.Timeout | undefined>>({});
