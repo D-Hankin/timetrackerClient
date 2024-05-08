@@ -54,6 +54,11 @@ function App() {
     setRole(role);
   }
 
+  const handleLogOut = () => {
+    localStorage.removeItem("jwtToken");
+    updateLoggedIn();
+  }
+
   useEffect(() => {
       localStorage.setItem("jwtToken", token)
       updateLoggedIn();
@@ -62,6 +67,7 @@ function App() {
 
   return (
     <>
+      { loggedIn ? <button onClick={handleLogOut}>Log out</button>: null  }
       <h1>The Pit of Despair Time Management System</h1>
       { !loggedIn ? <Login updateLoggedIn={updateLoggedIn} updateToken={updateToken} updateRole={updateRole}/> : <UserPage role={ role } token={ token }/>}
       { user !== null ? <h2>{ user.username + " " + user.name }</h2> : <h2>No user found</h2>}
