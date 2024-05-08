@@ -74,6 +74,8 @@ function User(props: Props) {
 
   const handleTimerClick = (name: string) => {
 
+    setEntryName(name);
+
     if (timers[name]) {
       clearInterval(intervalRef.current[name]);
       intervalRef.current[name] = undefined;
@@ -90,11 +92,35 @@ function User(props: Props) {
     
   }
 
+  const sendTime = async (name: string) => {
+
+    await fetch("https://urchin-app-gt5j7.ondigitalocean.app/api/entry/end-entry", {
+      method: "PATCH",
+      headers: {
+        "Origin": "https://sea-lion-app-6y5s4.ondigitalocean.app/",
+        "Content-Type": "application/json",
+        "Authorization": props.token,
+        "timeToAdd": timeToSend.toString(),
+        "name": name,
+        "username": props.username
+      },
+    }).then(res => {
+      if(!res.ok) {
+        throw new Error("Network response was not ok")
+      }
+      return res.text();
+    }).then(data => {
+      console.log(data);
+      
+    })
+
+    fetchEntries();
+  }
+
   const updateEntryName = (name: SetStateAction<string>) => {
     setEntryName(name);
   };
 
-  
   useEffect(() => {
     fetchUser();
     fetchEntries();
@@ -102,6 +128,7 @@ function User(props: Props) {
 
   useEffect(() => {
     console.log(timeToSend);
+    sendTime(entryName);
   }, [timeToSend]);
   
   
@@ -146,7 +173,7 @@ function User(props: Props) {
           {entries?.map((entry: Entry) => (
             <tr key={entry.name}>
               <td>{entry.name}</td>
-              <td>{entry.minutes}</td>
+              <td>{entry.minutes} second(s)</td>
               <td><button onClick={() => handleTimerClick(entry.name)}>{!timers[entry.name] ? "Start Timer" : "Stop Timer"}</button></td>
               <td>{seconds[entry.name]} second(s)</td>
             </tr>
