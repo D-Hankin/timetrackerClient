@@ -12,6 +12,8 @@ function App() {
 
   const [user, setUser] = useState<User | null>(null)
   const [loggedIn, setLoggedIn] = useState<Boolean>(false);
+  const [token, setToken] = useState<string>("");
+  const [role, setRole] = useState<string>("");
 
   useEffect(() => {
     fetchUser()
@@ -41,12 +43,27 @@ function App() {
     setLoggedIn(prevLoggedIn => !prevLoggedIn);
     console.log(loggedIn);
   }
+
+  const updateToken = (token: string) => {
+    if (token !== "") {
+      setToken(token);
+  }
+  }
+
+  const updateRole = (role: string) => {
+    setRole(role);
+  }
+
+  useEffect(() => {
+      localStorage.setItem("jwtToken", token)
+      updateLoggedIn();
+  }, [token])
   
 
   return (
     <>
       <h1>The Pit of Despair Time Management System</h1>
-      { !loggedIn ? <Login updateLoggedIn={updateLoggedIn}/> : <UserPage />}
+      { !loggedIn ? <Login updateLoggedIn={updateLoggedIn} updateToken={updateToken} updateRole={updateRole}/> : <UserPage role={ role } token={ token }/>}
       { user !== null ? <h2>{ user.username + " " + user.name }</h2> : <h2>No user found</h2>}
     </>
   )

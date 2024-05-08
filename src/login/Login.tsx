@@ -1,13 +1,15 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 
 interface Props {
-    updateLoggedIn: () => void 
+    updateLoggedIn: () => void
+    updateToken: (token: string) => void;
+    updateRole: (role: string) => void;
 }
 
 function Login(props: Props) {
     const [username, setUsername] = useState<string>("");
     const [password, setPassword] = useState<string>("");
-    const [token, setToken] = useState<string>("");
+    const [error, setError] = useState<string>("");
 
     const handleUsernameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setUsername(e.target.value);
@@ -19,31 +21,40 @@ function Login(props: Props) {
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        console.log('Username:', username);
-        console.log('Password:', password);
-        fetch("https://urchin-app-gt5j7.ondigitalocean.app/api/secured/login", {
-            method: "POST",
-            headers: {
-                "Origin": "https://sea-lion-app-6y5s4.ondigitalocean.app/",
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-                "username": username,
-                "password": password
-            })
-        }).then(res => res.json())
-        .then(data => {
-            console.log(data);
-            setToken(data.token)
-        })
-    };
 
-    useEffect(() => {
-        if (token !== "") {
-            localStorage.setItem("jwtToken", token)
-            props.updateLoggedIn();
+        if (username.trim() == "" || password.trim() == "") {
+            setError("You need to enter a valid username and password!")
+        } else {
+            fetch("https://urchin-app-gt5j7.ondigitalocean.app/api/secured/login", {
+                method: "POST",
+                headers: {
+                    "Origin": "https://sea-lion-app-6y5s4.ondigitalocean.app/",
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    "username": username,
+                    "password": password
+                })
+            }).then(res => {
+                if (!res.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return res.json();
+            })
+            .then(data => {
+                console.log(data);
+                if (data.token) {
+                    props.updateToken(data.token);
+                    props.updateRole(data.role);
+                    setError("");
+                }
+            })
+            .catch(error => {
+                setError("Incorrect username or password");
+                console.error('Error fetching data:', error);
+            });
         }
-    }, [token])
+    };
 
     return (
         <div id='loginFormDiv'>
@@ -52,6 +63,7 @@ function Login(props: Props) {
                 <input placeholder='username' value={username} onChange={handleUsernameChange}/>
                 <input placeholder='password' type='password' value={password} onChange={handlePasswordChange}/>
                 <button type='submit'>Enter</button>
+                <p>{ error }</p>
             </form>
         </div>
     );

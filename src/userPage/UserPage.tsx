@@ -1,8 +1,18 @@
+import Admin from "./admin/Admin"
+import User from "./user/User"
 
 
-function UserPage() {
+interface Props {
+  role: string,
+  token: string
+}
+
+function UserPage(props: Props) {
   return (
-    <div>UserPage</div>
+    <>
+      <div>UserPage: {props.role}</div>
+      { props.role === "admin" ? <Admin /> : <User />}
+    </>
   )
 }
 
