@@ -75,21 +75,36 @@ function User(props: Props) {
   const handleTimerClick = (name: string) => {
 
     setEntryName(name);
+    const timerAlreadyRunning = Object.values(timers).some(timer => timer)
 
-    if (timers[name]) {
+    if (!timerAlreadyRunning) {
+      if (timers[name]) {
+        clearInterval(intervalRef.current[name]);
+        intervalRef.current[name] = undefined;
+        setTimeToSend(seconds[name]);
+        setSeconds(prevSeconds => ({
+          ...prevSeconds, [name]: 0
+        }));
+      } 
+      setTimers(prevTimers => ({
+        ...prevTimers,
+        [name]: !prevTimers[name]
+      }))   
+    } else if (timers[name]) {
       clearInterval(intervalRef.current[name]);
       intervalRef.current[name] = undefined;
       setTimeToSend(seconds[name]);
       setSeconds(prevSeconds => ({
-        ...prevSeconds, [name]: 0
+          ...prevSeconds,
+          [name]: 0
       }));
-    } 
-      
-    setTimers(prevTimers => ({
-        ...prevTimers,
-        [name]: !prevTimers[name]
-    }))      
-    
+      setTimers(prevTimers => ({
+          ...prevTimers,
+          [name]: false
+      }));
+    } else {
+      alert("No multitasking allowed!");
+    }
   }
 
   const sendTime = async (name: string) => {
@@ -113,12 +128,12 @@ function User(props: Props) {
       console.log(data);
       
     })
-
     fetchEntries();
   }
 
   const updateEntryName = (name: SetStateAction<string>) => {
     setEntryName(name);
+    fetchEntries();
   };
 
   useEffect(() => {

@@ -68,11 +68,24 @@ function Admin(props: Props) {
     return (
       <>
       <div>{user?.username}</div>
-        <ul>
-          {allUsers?.map((user: User) => (
-            <li key={user.id}>{user.username}<button>See Stats</button><button>Burn User</button></li>
-          ))}
-        </ul>
+        <table>
+          <thead>
+            <tr>
+              <td>User</td>
+              <td>Time Logged</td>
+              <td>Burn user</td>
+            </tr>
+          </thead>
+          <tbody>
+            {allUsers?.map((user: User) => (
+          <tr>
+              <td key={user.id}>{user.username}</td>
+            <td>total</td>
+            <td><img src="public\fire.png"/></td>
+          </tr>
+            ))}
+          </tbody>
+        </table>
       <p>{error}</p>
     </>
   )
