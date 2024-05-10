@@ -3,7 +3,7 @@ import GetTotalTime from "./getTotalTime/GetTotalTime";
 import RemoveUser from "./removeUser/RemoveUser";
 
 interface Props {
-  token: string
+  token: string,
   username: string
 }
 
@@ -43,23 +43,26 @@ function Admin(props: Props) {
   }
 
   const fetchAllUsers = async () => {
-    await fetch("https://urchin-app-gt5j7.ondigitalocean.app/api/admin/all", {
-      method: "GET",
-      headers: {
-        "Authorization": props.token
-      }
-    }).then(res => {
-      if (!res.ok) {
-          throw new Error("Network response was not ok");
+
+    if (props.token !== undefined) {
+      await fetch("https://urchin-app-gt5j7.ondigitalocean.app/api/admin/all", {
+        method: "GET",
+        headers: {
+          "Authorization": props.token
         }
-        return res.json();
-      }).then(data => {
-        setAllUsers(data);
-        console.log(data);
-      }).catch(error => {
-        setError("Incorrect username or password");
-        console.error('Error fetching data:', error);
-      });
+      }).then(res => {
+        if (!res.ok) {
+            throw new Error("Network response was not ok");
+          }
+          return res.json();
+        }).then(data => {
+          setAllUsers(data);
+          console.log(data);
+        }).catch(error => {
+          setError("Incorrect username or password");
+          console.error('Error fetching data:', error);
+        });
+    }
     }
     
     useEffect (() => {

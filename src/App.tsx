@@ -12,7 +12,6 @@ function App() {
   const [role, setRole] = useState<string>("");
   const [username, setUsername] = useState<string>("");
   const [createAccount, setCreateAccount] = useState<boolean>(false);
-  
 
   const updateLoggedIn = () => {
     setLoggedIn(prevLoggedIn => !prevLoggedIn);
@@ -27,14 +26,18 @@ function App() {
 
   const updateRole = (role: string) => {
     setRole(role);
+    localStorage.setItem("role", role);
   }
 
-  const updateUsername = (username:string) => {
+  const updateUsername = (username: string) => {
     setUsername(username);
+    localStorage.setItem("username", username);
   }
 
   const handleLogOut = () => {
     localStorage.removeItem("jwtToken");
+    localStorage.removeItem("role");
+    localStorage.removeItem("username");
     updateLoggedIn();
   }
 
@@ -47,12 +50,25 @@ function App() {
   }
 
   useEffect(() => {
+    if(token !== "") {
       localStorage.setItem("jwtToken", token)
       updateLoggedIn();
+    }
   }, [token])
 
   useEffect(() => {
-    setLoggedIn(false);
+    const storedToken = localStorage.getItem("jwtToken");
+    if (storedToken !== null && storedToken !== undefined) {
+      setToken(storedToken);
+    }
+    const storedrole = localStorage.getItem("role");
+    if (storedrole !== null && storedrole !== undefined) {
+      setRole(storedrole);
+    }
+    const storedUsername = localStorage.getItem("username");
+    if (storedUsername !== null && storedUsername !== undefined) {
+      setUsername(storedUsername);
+    }
     setCreateAccount(false);
   }, [])
   

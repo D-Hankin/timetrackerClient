@@ -2,12 +2,12 @@ import { SetStateAction, useEffect, useRef, useState } from "react";
 import NewEntry from "./newEntry/NewEntry";
 
 interface Props {
-  token: string
+  token: string,
   username: string
 }
 
 interface User {
-  id: string
+  id: string,
   username: string,
   name: string,
   email: string,
@@ -63,6 +63,8 @@ function User(props: Props) {
       }).then(data => {
         console.log("Fetched Entries:", data);
     
+        let now  = new Date();
+        console.log(now.toUTCString());
         setEntries(data);
         setTimers(Object.fromEntries(data.map((entry: { name: string; }) => [entry.name, false])));
         setSeconds(Object.fromEntries(data.map((entry: { name: string; }) => [entry.name, 0])));
