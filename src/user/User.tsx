@@ -1,6 +1,7 @@
 import { SetStateAction, useEffect, useRef, useState } from "react";
 import NewEntry from "./newEntry/NewEntry";
 import FormatTime from "./formatTime/FormatTime";
+import './user.css';
 
 interface Props {
   token: string,
@@ -166,10 +167,10 @@ function User(props: Props) {
   }, [timers, setSeconds]);
 
   return (
-    <>
-      <div>{user?.username}</div>
+    <div id="userDiv">
+      <h2>{user?.username}</h2>
       <NewEntry username={props.username} entryName={entryName} updateEntryName={updateEntryName} />
-      <table>
+      <table id="userTable">
         <thead>
           <tr>
             <td>Activity</td>
@@ -189,7 +190,7 @@ function User(props: Props) {
           ))}
         </tbody>
       </table>
-    </>
+    </div>
   )
 }
 

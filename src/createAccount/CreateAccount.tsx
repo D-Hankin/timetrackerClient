@@ -1,7 +1,8 @@
-import React, { useState } from 'react'
+import React, { useState } from 'react';
+import "./createAccount.css";
 
 interface Props {
-    updateCreateAccount: () => void
+    updateCreateAccount: () => void,
 }
 
 function CreateAccount(props: Props) {
@@ -68,13 +69,13 @@ function CreateAccount(props: Props) {
     }
 
   return (
-    <form onSubmit={handleSubmit}>
+    <form id='createForm' onSubmit={handleSubmit}>
         <h2>Create Account</h2>
-        <input placeholder='Username (5-15 characters)' value={username} onChange={handleUsernameChange}/>
-        <input placeholder='Full Name' value={name} onChange={handleNameChange}/>
-        <input placeholder='Password' value={password} onChange={handlePasswordChange} type='password'/>
-        <input placeholder='Repeat Password' value={repeatPassword} onChange={handleRepeatPasswordChange} type='password'/>
-        <input placeholder='@Email' value={email} onChange={handleEmailChange} type='email'/>
+        <input className="createInput" placeholder='Username (5-15 characters)' value={username} onChange={handleUsernameChange}/>
+        <input className="createInput" placeholder='Full Name' value={name} onChange={handleNameChange}/>
+        <input className="createInput" placeholder='Password' value={password} onChange={handlePasswordChange} type='password'/>
+        <input className="createInput" placeholder='Repeat Password' value={repeatPassword} onChange={handleRepeatPasswordChange} type='password'/>
+        <input className="createInput" placeholder='@Email' value={email} onChange={handleEmailChange} type='email'/>
         <button>Submit (to The Dark Lord)</button>
     </form>
   )

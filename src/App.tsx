@@ -71,13 +71,12 @@ function App() {
     }
     setCreateAccount(false);
   }, [])
-  
 
   return (
     <>
       { loggedIn ? <button onClick={handleLogOut}>Log out</button>: <button onClick={handleCreateAccount}>Create Account</button>  }
       <h1>The Pit of Despair Time Management System</h1>
-      { createAccount ? <CreateAccount updateCreateAccount={updateCreateAccount}/> : null}
+      { createAccount ? <CreateAccount updateCreateAccount={updateCreateAccount} /> : null}
       { !loggedIn ? <Login updateLoggedIn={updateLoggedIn} updateToken={updateToken} updateRole={updateRole} username={username} updateUsername={updateUsername}/> 
           : role === "admin" ? <Admin token={token} username={username}/> : role === "user" ? <User token={token} username={username}/> : null}
     </>

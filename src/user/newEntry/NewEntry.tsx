@@ -1,4 +1,5 @@
-import { SetStateAction, useEffect, useState } from "react"
+import { SetStateAction, useEffect, useState } from "react";
+import './newEntry.css';
 
 interface Props {
   username: string,
@@ -53,7 +54,7 @@ function NewEntry(props: Props) {
     }, [])
 
   return (
-    <form onSubmit={handleSubmit}>
+    <form id="newEntryForm" onSubmit={handleSubmit}>
         <h2>New Entry</h2>
         <input placeholder="name" value={props.entryName} onChange={handleNameChange}></input>
         <button>Save</button>
