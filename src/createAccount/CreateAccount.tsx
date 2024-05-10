@@ -53,8 +53,6 @@ function CreateAccount(props: Props) {
                     throw new Error("Something went wrong");
                 }
                 return res.json();
-            }).then(data => {
-                console.log(data);
             }).catch((error) => {
                 console.log("error:" , error);
             })
@@ -77,7 +75,7 @@ function CreateAccount(props: Props) {
         <input placeholder='Password' value={password} onChange={handlePasswordChange} type='password'/>
         <input placeholder='Repeat Password' value={repeatPassword} onChange={handleRepeatPasswordChange} type='password'/>
         <input placeholder='@Email' value={email} onChange={handleEmailChange} type='email'/>
-        <button>Submit (to the King)</button>
+        <button>Submit (to The Dark Lord)</button>
     </form>
   )
 }

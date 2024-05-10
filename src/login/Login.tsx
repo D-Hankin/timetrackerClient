@@ -24,7 +24,6 @@ function Login(props: Props) {
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        console.log(inputUsername, password)
         if (inputUsername.trim() == "" || password.trim() == "") {
             setError("You need to enter a valid username and password!")
         } else {
@@ -45,7 +44,6 @@ function Login(props: Props) {
                 return res.json();
             })
             .then(data => {
-                console.log(data);
                 if (data.token) {
                     props.updateToken(data.token);
                     props.updateRole(data.role);

@@ -23,7 +23,6 @@ function Admin(props: Props) {
 
   const fetchUser = async () => {
 
-    console.log(props.username);
     try {
       await fetch("https://urchin-app-gt5j7.ondigitalocean.app/api/user", {
         method: "GET",
@@ -57,7 +56,6 @@ function Admin(props: Props) {
           return res.json();
         }).then(data => {
           setAllUsers(data);
-          console.log(data);
         }).catch(error => {
           setError("Incorrect username or password");
           console.error('Error fetching data:', error);
@@ -87,11 +85,11 @@ function Admin(props: Props) {
               <td key={user.id}>{user.username}</td>
             <td><GetTotalTime username={user.username}/></td>
             <RemoveUser username={user.username} fetchUsers={fetchAllUsers}/>
+            <p>{error}</p>
           </tr>
             ))}
           </tbody>
         </table>
-      <p>{error}</p>
     </>
   )
 }

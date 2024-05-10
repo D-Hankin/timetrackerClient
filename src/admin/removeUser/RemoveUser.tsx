@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import fireImg from "../../assets/fire.png";
 
 interface Props {
     username: string,
@@ -42,7 +43,7 @@ function RemoveUser(props: Props) {
 
   return (
     <td>
-        <img onClick={() => handleRemoveClick(props.username)} src="public\fire.png"/>
+        <img onClick={() => handleRemoveClick(props.username)} src={fireImg} />
         <p>{message}</p>
     </td>
   )
