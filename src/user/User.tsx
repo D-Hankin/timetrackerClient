@@ -24,6 +24,7 @@ interface Entry {
 
 function User(props: Props) {
   const [entryName, setEntryName] = useState<string>("");
+  const [entryToSend, setEntryToSend] = useState<string>("");
   const [user, setUser] = useState<User | null>(null);
   const [entries, setEntries] = useState<Entry[] | null>(null);
   const [seconds, setSeconds] = useState<Record<string, number>>({});
@@ -72,7 +73,7 @@ function User(props: Props) {
 
   const handleTimerClick = (name: string) => {
 
-    setEntryName(name);
+    setEntryToSend(name);
     const timerAlreadyRunning = Object.values(timers).some(timer => timer)
 
     if (!timerAlreadyRunning) {
@@ -139,7 +140,7 @@ function User(props: Props) {
   }, []);
 
   useEffect(() => {
-    sendTime(entryName);
+    sendTime(entryToSend);
   }, [timeToSend]);
   
   const intervalRef = useRef<Record<string, NodeJS.Timeout | undefined>>({});
