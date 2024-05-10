@@ -1,5 +1,6 @@
 import { SetStateAction, useEffect, useRef, useState } from "react";
 import NewEntry from "./newEntry/NewEntry";
+import FormatTime from "./formatTime/FormatTime";
 
 interface Props {
   token: string,
@@ -40,7 +41,6 @@ function User(props: Props) {
     .then(res => res.json())
     .then(data => {
       setUser(data)
-      console.log(data)
     }).catch(error => {
       console.error('Error fetching data:', error);
     });
@@ -60,15 +60,10 @@ function User(props: Props) {
           throw new Error('Network response was not ok');
         }
         return res.json()
-      }).then(data => {
-        console.log("Fetched Entries:", data);
-    
-        let now  = new Date();
-        console.log(now.toUTCString());
+      }).then(data => {   
         setEntries(data);
         setTimers(Object.fromEntries(data.map((entry: { name: string; }) => [entry.name, false])));
         setSeconds(Object.fromEntries(data.map((entry: { name: string; }) => [entry.name, 0])));
-    
       }).catch ((error) => {
         console.error('Error fetching entry data:', error);
       });
@@ -126,9 +121,8 @@ function User(props: Props) {
         throw new Error("Network response was not ok")
       }
       return res.text();
-    }).then(data => {
-      console.log(data);
-      
+    }).catch((error) => {
+      console.log("error: ", error);
     })
     fetchEntries();
   }
@@ -144,10 +138,8 @@ function User(props: Props) {
   }, []);
 
   useEffect(() => {
-    console.log(timeToSend);
     sendTime(entryName);
   }, [timeToSend]);
-  
   
   const intervalRef = useRef<Record<string, NodeJS.Timeout | undefined>>({});
   useEffect(() => {
@@ -190,7 +182,7 @@ function User(props: Props) {
           {entries?.map((entry: Entry) => (
             <tr key={entry.name}>
               <td>{entry.name}</td>
-              <td>{entry.minutes} second(s)</td>
+              <FormatTime time={entry.minutes}/>
               <td><button onClick={() => handleTimerClick(entry.name)}>{!timers[entry.name] ? "Start Timer" : "Stop Timer"}</button></td>
               <td>{seconds[entry.name]} second(s)</td>
             </tr>
