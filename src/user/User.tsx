@@ -2,12 +2,12 @@ import { SetStateAction, useEffect, useRef, useState } from "react";
 import NewEntry from "./newEntry/NewEntry";
 
 interface Props {
-  token: string
+  token: string,
   username: string
 }
 
 interface User {
-  id: string
+  id: string,
   username: string,
   name: string,
   email: string,
@@ -63,6 +63,8 @@ function User(props: Props) {
       }).then(data => {
         console.log("Fetched Entries:", data);
     
+        let now  = new Date();
+        console.log(now.toUTCString());
         setEntries(data);
         setTimers(Object.fromEntries(data.map((entry: { name: string; }) => [entry.name, false])));
         setSeconds(Object.fromEntries(data.map((entry: { name: string; }) => [entry.name, 0])));
@@ -75,21 +77,36 @@ function User(props: Props) {
   const handleTimerClick = (name: string) => {
 
     setEntryName(name);
+    const timerAlreadyRunning = Object.values(timers).some(timer => timer)
 
-    if (timers[name]) {
+    if (!timerAlreadyRunning) {
+      if (timers[name]) {
+        clearInterval(intervalRef.current[name]);
+        intervalRef.current[name] = undefined;
+        setTimeToSend(seconds[name]);
+        setSeconds(prevSeconds => ({
+          ...prevSeconds, [name]: 0
+        }));
+      } 
+      setTimers(prevTimers => ({
+        ...prevTimers,
+        [name]: !prevTimers[name]
+      }))   
+    } else if (timers[name]) {
       clearInterval(intervalRef.current[name]);
       intervalRef.current[name] = undefined;
       setTimeToSend(seconds[name]);
       setSeconds(prevSeconds => ({
-        ...prevSeconds, [name]: 0
+          ...prevSeconds,
+          [name]: 0
       }));
-    } 
-      
-    setTimers(prevTimers => ({
-        ...prevTimers,
-        [name]: !prevTimers[name]
-    }))      
-    
+      setTimers(prevTimers => ({
+          ...prevTimers,
+          [name]: false
+      }));
+    } else {
+      alert("No multitasking allowed!");
+    }
   }
 
   const sendTime = async (name: string) => {
@@ -113,12 +130,12 @@ function User(props: Props) {
       console.log(data);
       
     })
-
     fetchEntries();
   }
 
   const updateEntryName = (name: SetStateAction<string>) => {
     setEntryName(name);
+    fetchEntries();
   };
 
   useEffect(() => {

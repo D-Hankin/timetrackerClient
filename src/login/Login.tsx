@@ -59,7 +59,9 @@ function Login(props: Props) {
         }
     };
     useEffect(() => {
-        props.updateUsername(inputUsername);
+        if (inputUsername !== "") {
+            props.updateUsername(inputUsername);
+        }
     }, [inputUsername])
 
     return (

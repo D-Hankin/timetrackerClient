@@ -1,7 +1,9 @@
 import { useEffect, useState } from "react";
+import GetTotalTime from "./getTotalTime/GetTotalTime";
+import RemoveUser from "./removeUser/RemoveUser";
 
 interface Props {
-  token: string
+  token: string,
   username: string
 }
 
@@ -34,7 +36,6 @@ function Admin(props: Props) {
       .then(res => res.json())
       .then(data => {
         setUser(data)
-        console.log(data)
       });
     } catch (error) {
       console.error('Error fetching user data:')
@@ -42,22 +43,26 @@ function Admin(props: Props) {
   }
 
   const fetchAllUsers = async () => {
-    await fetch("https://urchin-app-gt5j7.ondigitalocean.app/api/admin/all", {
-      method: "GET",
-      headers: {
-        "Authorization": props.token
-      }
-    }).then(res => {
-      if (!res.ok) {
-          throw new Error('Network response was not ok');
+
+    if (props.token !== undefined) {
+      await fetch("https://urchin-app-gt5j7.ondigitalocean.app/api/admin/all", {
+        method: "GET",
+        headers: {
+          "Authorization": props.token
         }
-        return res.json();
-      }).then(data => {
-        setAllUsers(data);
-      }).catch(error => {
-        setError("Incorrect username or password");
-        console.error('Error fetching data:', error);
-      });
+      }).then(res => {
+        if (!res.ok) {
+            throw new Error("Network response was not ok");
+          }
+          return res.json();
+        }).then(data => {
+          setAllUsers(data);
+          console.log(data);
+        }).catch(error => {
+          setError("Incorrect username or password");
+          console.error('Error fetching data:', error);
+        });
+    }
     }
     
     useEffect (() => {
@@ -68,11 +73,24 @@ function Admin(props: Props) {
     return (
       <>
       <div>{user?.username}</div>
-        <ul>
-          {allUsers?.map((user: User) => (
-            <li key={user.id}>{user.username}<button>See Stats</button><button>Burn User</button></li>
-          ))}
-        </ul>
+        <table>
+          <thead>
+            <tr>
+              <td>User</td>
+              <td>Time Logged</td>
+              <td>Burn user</td>
+            </tr>
+          </thead>
+          <tbody>
+            {allUsers?.map((user: User) => (
+          <tr>
+              <td key={user.id}>{user.username}</td>
+            <td><GetTotalTime username={user.username}/></td>
+            <RemoveUser username={user.username} fetchUsers={fetchAllUsers}/>
+          </tr>
+            ))}
+          </tbody>
+        </table>
       <p>{error}</p>
     </>
   )
