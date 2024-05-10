@@ -1,4 +1,4 @@
-# Time Tracker
+# Time Tracker (under development)
 
 ## Overview
 This is a timekeeping program developed for a school project with Jönköping University. The project consists of a client-side application built with React, Vite, and TypeScript. The application allows users to create accounts, start activities, track the duration of each activity, and maintains a record of these activities.
