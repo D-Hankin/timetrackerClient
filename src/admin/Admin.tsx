@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import GetTotalTime from "./getTotalTime/GetTotalTime";
 import RemoveUser from "./removeUser/RemoveUser";
+import './admin.css';
 
 interface Props {
   token: string,
@@ -70,8 +71,8 @@ function Admin(props: Props) {
 
     return (
       <>
-      <div>{user?.username}</div>
-        <table>
+      <h2>{user?.username}</h2>
+        <table id="adminTable">
           <thead>
             <tr>
               <td>User</td>

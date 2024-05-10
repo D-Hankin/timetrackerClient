@@ -1,6 +1,7 @@
 import { SetStateAction, useEffect, useRef, useState } from "react";
 import NewEntry from "./newEntry/NewEntry";
 import FormatTime from "./formatTime/FormatTime";
+import './user.css';
 
 interface Props {
   token: string,
@@ -23,6 +24,7 @@ interface Entry {
 
 function User(props: Props) {
   const [entryName, setEntryName] = useState<string>("");
+  const [entryToSend, setEntryToSend] = useState<string>("");
   const [user, setUser] = useState<User | null>(null);
   const [entries, setEntries] = useState<Entry[] | null>(null);
   const [seconds, setSeconds] = useState<Record<string, number>>({});
@@ -71,7 +73,7 @@ function User(props: Props) {
 
   const handleTimerClick = (name: string) => {
 
-    setEntryName(name);
+    setEntryToSend(name);
     const timerAlreadyRunning = Object.values(timers).some(timer => timer)
 
     if (!timerAlreadyRunning) {
@@ -138,7 +140,7 @@ function User(props: Props) {
   }, []);
 
   useEffect(() => {
-    sendTime(entryName);
+    sendTime(entryToSend);
   }, [timeToSend]);
   
   const intervalRef = useRef<Record<string, NodeJS.Timeout | undefined>>({});
@@ -166,10 +168,10 @@ function User(props: Props) {
   }, [timers, setSeconds]);
 
   return (
-    <>
-      <div>{user?.username}</div>
+    <div id="userDiv">
+      <h2>{user?.username}</h2>
       <NewEntry username={props.username} entryName={entryName} updateEntryName={updateEntryName} />
-      <table>
+      <table id="userTable">
         <thead>
           <tr>
             <td>Activity</td>
@@ -189,7 +191,7 @@ function User(props: Props) {
           ))}
         </tbody>
       </table>
-    </>
+    </div>
   )
 }
 

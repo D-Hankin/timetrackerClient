@@ -1,0 +1,13 @@
+#newEntryForm {
+    background: linear-gradient(to right, #FF0000, #FFA500, #FFFF00);
+    display: inline-block;
+    margin: 10px;
+    border-radius: 10px;
+}
+
+h2 {
+    background: linear-gradient(to right, #FF0000, #FFA500, #FFFF00);
+    border-radius: 10px;
+    padding: 10px;
+    font-size: 200%;
+}

@@ -1,0 +1,14 @@
+#userTable {
+    margin: auto;
+    padding: 20px;
+    background: linear-gradient(to right, #FF0000, #FFA500, #FFFF00);
+    border-radius: 10px;
+}
+
+thead {
+    font-size: 150%;
+}
+
+td {
+    padding: 10px;
+}
