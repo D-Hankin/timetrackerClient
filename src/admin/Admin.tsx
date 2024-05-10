@@ -1,4 +1,6 @@
 import { useEffect, useState } from "react";
+import GetTotalTime from "./getTotalTime/GetTotalTime";
+import RemoveUser from "./removeUser/RemoveUser";
 
 interface Props {
   token: string
@@ -34,7 +36,6 @@ function Admin(props: Props) {
       .then(res => res.json())
       .then(data => {
         setUser(data)
-        console.log(data)
       });
     } catch (error) {
       console.error('Error fetching user data:')
@@ -49,11 +50,12 @@ function Admin(props: Props) {
       }
     }).then(res => {
       if (!res.ok) {
-          throw new Error('Network response was not ok');
+          throw new Error("Network response was not ok");
         }
         return res.json();
       }).then(data => {
         setAllUsers(data);
+        console.log(data);
       }).catch(error => {
         setError("Incorrect username or password");
         console.error('Error fetching data:', error);
@@ -80,8 +82,8 @@ function Admin(props: Props) {
             {allUsers?.map((user: User) => (
           <tr>
               <td key={user.id}>{user.username}</td>
-            <td>total</td>
-            <td><img src="public\fire.png"/></td>
+            <td><GetTotalTime username={user.username}/></td>
+            <RemoveUser username={user.username} fetchUsers={fetchAllUsers}/>
           </tr>
             ))}
           </tbody>
