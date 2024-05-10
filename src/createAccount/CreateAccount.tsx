@@ -35,29 +35,38 @@ function CreateAccount(props: Props) {
     const handleSubmit = async (e: { preventDefault: () => void; }) => {
         e.preventDefault();
 
-        await fetch("https://urchin-app-gt5j7.ondigitalocean.app/api/create-user", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-                "Origin": "https://sea-lion-app-6y5s4.ondigitalocean.app/"
-            },
-            body: JSON.stringify({
-                "username": username,
-                "name": name,
-                "password": password,
-                "email": email
+        if (password === repeatPassword && password.trim() !== "" && email.match(/^[^\s@]+@[^\s@]+\.[^\s@]+$/) && username.trim() !== "" && name.trim() !== "") {
+            await fetch("https://urchin-app-gt5j7.ondigitalocean.app/api/create-user", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Origin": "https://sea-lion-app-6y5s4.ondigitalocean.app/"
+                },
+                body: JSON.stringify({
+                    "username": username.trim(),
+                    "name": name.trim(),
+                    "password": password,
+                    "email": email.trim()
+                })
+            }).then(res => {
+                if(!res.ok) {
+                    throw new Error("Something went wrong");
+                }
+                return res.json();
+            }).then(data => {
+                console.log(data);
+            }).catch((error) => {
+                console.log("error:" , error);
             })
-        }).then(res => {
-            if(!res.ok) {
-                throw new Error("Something went wrong");
-            }
-            return res.json();
-        }).then(data => {
-            console.log(data);
-        }).catch((error) => {
-            console.log("error:" , error);
-        })
-        props.updateCreateAccount();
+            props.updateCreateAccount();
+        } else if (password !== repeatPassword) {
+            alert("The passwords do not match!");
+        } else if (username.trim() === "" || name.trim() === "" || password.trim() === "") {
+            alert("You must fill in all the fields!");
+        } else {
+            alert("Invalid email!");
+        }
+
     }
 
   return (
