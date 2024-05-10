@@ -1,0 +1,6 @@
+#loginForm {
+    display: block;
+    padding: 10px;
+    border-radius: 10px;
+    background-color: linear-gradient(to right, #FF0000, #FFA500, #FFFF00);
+}
