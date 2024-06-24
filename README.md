@@ -3,9 +3,6 @@
 ## Overview
 This is a timekeeping program developed for a school project with Jönköping University. The project consists of a client-side application built with React, Vite, and TypeScript. The application allows users to create accounts, start activities, track the duration of each activity, and maintains a record of these activities.
 
-## Deployment
-The client-side application is deployed live and accessible at https://sea-lion-app-6y5s4.ondigitalocean.app/
-
 ## Features
 - User authentication: Users can create accounts and log in securely.
 - Activity tracking: Users can create, start and stop activities, and the application tracks the duration of each activity.
@@ -20,7 +17,7 @@ The client-side application is deployed live and accessible at https://sea-lion-
 - MongoDB Atlas: Document based database storage 
 
 ## Server Connection
-The client-side application is connected to the Time Tracker server. The server repository can be found [here](https://github.com/D-Hankin/timetracker_server), and the live server is hosted at [https://urchin-app-gt5j7.ondigitalocean.app](https://urchin-app-gt5j7.ondigitalocean.app).
+The client-side application is connected to the Time Tracker server. The server repository can be found [here](https://github.com/D-Hankin/timetracker_server).
 
 ## Usage
 To run the client-side application locally:
